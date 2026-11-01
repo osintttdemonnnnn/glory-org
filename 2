@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLORY ORG — OSINT Research Dashboard</title>
+<meta name="description" content="GLORY ORG is a lawful, privacy-respecting OSINT research dashboard for public information, domain research, case management, and evidence organization.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">G</div>
+      <div><h1>GLORY ORG</h1><p class="made-by">made by glory org</p></div>
+    </div>
+    <nav>
+      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="search">Search &amp; Research</button>
+      <button class="nav-btn" data-view="network">Network &amp; Domain</button>
+      <button class="nav-btn" data-view="identifiers">Identifiers</button>
+      <button class="nav-btn" data-view="people">People &amp; Address</button>
+      <button class="nav-btn" data-view="cases">Cases</button>
+      <button class="nav-btn" data-view="notes">Notes &amp; Evidence</button>
+      <button class="nav-btn" data-view="files">File Hashing</button>
+      <button class="nav-btn" data-view="history">History</button>
+      <button class="nav-btn" data-view="about">About &amp; Legal</button>
+    </nav>
+    <div class="sidebar-footer"><span class="status-dot"></span> Local-first &middot; No account required</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn" aria-label="Toggle menu">☰</button>
+      <input id="globalSearch" type="search" placeholder="Search tools, cases, notes, and history…" aria-label="Global search">
+      <button id="newCaseBtn" class="btn primary">+ New case</button>
+    </header>
+    <section id="view-dashboard" class="view active">
+      <div class="page-head"><h2>Research Dashboard</h2><p>Organize lawful open-source research, public records, domains, and evidence in one workspace.</p></div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="grid-2">
+        <div class="card"><h3>Quick tools</h3><div class="quick-tools" id="quickTools"></div></div>
+        <div class="card"><h3>Recent activity</h3><ul class="activity-list" id="recentActivity"></ul></div>
+      </div>
+      <div class="card"><h3>Saved cases</h3><div id="dashboardCases" class="case-grid"></div></div>
+    </section>
+    <section id="view-search" class="view">
+      <div class="page-head"><h2>Search &amp; Research</h2><p>Generate searches and inspect publicly available web and archive information.</p></div>
+      <div class="grid-2">
+        <div class="card tool-card" data-tool="dorks"><h3>Google Dorks generator</h3><p>Build advanced public-web search queries.</p>
+          <input id="dorkTerm" placeholder="Keyword, e.g. annual report">
+          <div class="row"><select id="dorkOperator"><option value="">No operator</option><option value="site:">site:</option><option value="filetype:">filetype:</option><option value="intitle:">intitle:</option><option value="inurl:">inurl:</option><option value="before:">before:</option><option value="after:">after:</option></select><input id="dorkValue" placeholder="Operator value, e.g. pdf or example.com"></div>
+          <div class="row"><button class="btn" data-action="add-dork">Add operator</button><button class="btn primary" data-action="run-dork">Search Google</button></div><code id="dorkPreview" class="preview"></code></div>
+        <div class="card tool-card" data-tool="web-search"><h3>Public web search</h3><p>Search the public web using your chosen engine.</p>
+          <input id="webQuery" placeholder="Enter a public research query">
+          <div class="row"><select id="webEngine"><option value="https://duckduckgo.com/?q=">DuckDuckGo</option><option value="https://www.google.com/search?q=">Google</option><option value="https://www.bing.com/search?q=">Bing</option></select><button class="btn primary" data-action="web-search">Search</button></div></div>
+        <div class="card tool-card" data-tool="username"><h3>Username lookup</h3><p>Check public profile pages for a username across popular platforms.</p>
+          <input id="usernameInput" placeholder="Public username"><button class="btn primary" data-action="username-lookup">Check public profiles</button><div id="usernameResults" class="link-grid"></div></div>
+        <div class="card tool-card" data-tool="wayback"><h3>Wayback Machine lookup</h3><p>Find publicly archived snapshots of a URL.</p>
+          <input id="waybackUrl" placeholder="https://example.com/page">
+          <div class="row"><button class="btn primary" data-action="wayback-lookup">Find snapshot</button><button class="btn" data-action="wayback-open">Open archive</button></div><div id="waybackResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="social"><h3>Public social-media profile search</h3><p>Open platform-native public search pages.</p>
+          <input id="socialQuery" placeholder="Name, brand, or public username"><button class="btn primary" data-action="social-search">Open public searches</button><div id="socialResults" class="link-grid"></div></div>
+      </div>
+    </section>
+    <section id="view-network" class="view">
+      <div class="page-head"><h2>Network &amp; Domain</h2><p>Use public DNS, RDAP, certificate-transparency, and network-data services.</p></div>
+      <div class="grid-2">
+        <div class="card tool-card" data-tool="ip"><h3>IP lookup</h3><p>Public, non-sensitive network information for an IP address.</p><input id="ipInput" placeholder="IPv4 or IPv6 address"><button class="btn primary" data-action="ip-lookup">Look up IP</button><div id="ipResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="dns"><h3>DNS lookup</h3><p>Query public DNS records through Google Public DNS.</p><input id="dnsDomain" placeholder="example.com"><div class="row"><select id="dnsType"><option>A</option><option>AAAA</option><option>CNAME</option><option>MX</option><option>NS</option><option>TXT</option><option>SOA</option></select><button class="btn primary" data-action="dns-lookup">Resolve</button></div><div id="dnsResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="domain"><h3>Domain &amp; WHOIS lookup</h3><p>Retrieve public registration data through RDAP.</p><input id="domainInput" placeholder="example.com"><button class="btn primary" data-action="domain-lookup">Look up domain</button><div id="domainResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="asn"><h3>ASN lookup</h3><p>Inspect public autonomous-system registration information.</p><input id="asnInput" placeholder="AS15169 or 15169"><button class="btn primary" data-action="asn-lookup">Look up ASN</button><div id="asnResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="crt"><h3>Certificate transparency</h3><p>Search public certificate-transparency records.</p><input id="crtDomain" placeholder="example.com"><button class="btn primary" data-action="crt-lookup">Search certificates</button><div id="crtResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="metadata"><h3>Website metadata lookup</h3><p>Retrieve publicly served page metadata through Microlink.</p><input id="metaUrl" placeholder="https://example.com"><button class="btn primary" data-action="metadata-lookup">Get metadata</button><div id="metaResult" class="result"></div></div>
+      </div>
+    </section>
+    <section id="view-identifiers" class="view">
+      <div class="page-head"><h2>Identifiers</h2><p>Validate identifiers and consult public, platform-provided information only.</p></div>
+      <div class="grid-2">
+        <div class="card tool-card" data-tool="discord"><h3>Discord ID lookup</h3><p>Look up public information for a Discord user ID.</p><input id="discordId" placeholder="Discord user ID"><button class="btn primary" data-action="discord-lookup">Look up ID</button><div id="discordResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="telegram"><h3>Telegram public username</h3><p>Open the public Telegram profile page for a username.</p><input id="telegramUser" placeholder="public_username"><button class="btn primary" data-action="telegram-lookup">Open public profile</button><div id="telegramResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="email"><h3>Email format &amp; domain validation</h3><p>Validate syntax and check MX records.</p><input id="emailInput" placeholder="person@example.com"><button class="btn primary" data-action="email-validate">Validate</button><div id="emailResult" class="result"></div></div>
+        <div class="card tool-card" data-tool="phone"><h3>Phone format &amp; country code</h3><p>Normalize a phone number and identify its calling code.</p><input id="phoneInput" placeholder="+62 812 3456 7890"><button class="btn primary" data-action="phone-validate">Validate</button><div id="phoneResult" class="result"></div></div>
+      </div>
+    </section>
+    <section id="view-people" class="view">
+      <div class="page-head"><h2>People &amp; Address Research</h2><p>Lawful helpers for publicly available government and property-record sources.</p></div>
+      <div class="grid-2">
+        <div class="card tool-card"><h3>Address formatter &amp; public-record links</h3><p>Validate address layout and open official public-record portals.</p>
+          <input id="addressLine" placeholder="Street address"><div class="row"><input id="addressCity" placeholder="City"><input id="addressPostal" placeholder="Postal code"></div>
+          <div class="row"><select id="addressCountry"><option value="US">United States</option><option value="ID">Indonesia</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option></select><button class="btn primary" data-action="address-validate">Validate &amp; find sources</button></div><div id="addressResult" class="result"></div></div>
+        <div class="card tool-card"><h3>Public-information name search</h3><p>Prepare a lawful public-record search.</p>
+          <input id="nameFull" placeholder="Full public name"><div class="row"><input id="nameLocation" placeholder="City, state, or country"><button class="btn primary" data-action="name-search">Build source links</button></div><div id="nameResult" class="result"></div></div>
+      </div>
+      <div class="card notice"><h3>Acceptable use</h3><p>Use these helpers only for lawful purposes. Do not use GLORY ORG to stalk, harass, dox, discriminate against, or target anyone.</p></div>
+    </section>
+    <section id="view-cases" class="view">
+      <div class="page-head"><h2>Case Management</h2><p>Create research cases, add findings, and export timestamped reports.</p></div>
+      <div class="card"><div class="row"><input id="caseTitle" placeholder="Case title"><input id="caseTags" placeholder="Tags, comma-separated"><button class="btn primary" data-action="create-case">Create case</button></div></div>
+      <div id="caseList" class="case-grid"></div>
+    </section>
+    <section id="view-notes" class="view">
+      <div class="page-head"><h2>Notes &amp; Evidence</h2><p>Record findings, sources, and evidence references.</p></div>
+      <div class="card"><div class="row"><select id="noteCase"></select><input id="noteTitle" placeholder="Finding title"></div>
+        <textarea id="noteBody" rows="5" placeholder="What did you find? Include the public source URL."></textarea><input id="noteSource" placeholder="Source URL or evidence reference">
+        <div class="row"><button class="btn primary" data-action="add-note">Add timestamped note</button><button class="btn" data-action="export-report">Export case report</button></div></div>
+      <div id="notesList" class="notes-list"></div>
+    </section>
+    <section id="view-files" class="view">
+      <div class="page-head"><h2>Local File Hashing</h2><p>Calculate SHA-256 hashes in your browser. Files are never uploaded.</p></div>
+      <div class="card"><input type="file" id="hashFile" multiple><button class="btn primary" data-action="hash-files">Calculate SHA-256</button><div id="hashResults" class="result"></div></div>
+    </section>
+    <section id="view-history" class="view">
+      <div class="page-head"><h2>History &amp; Saved Searches</h2><p>Review recent lookups and save useful searches locally.</p></div>
+      <div class="grid-2">
+        <div class="card"><h3>Recent lookups</h3><ul class="activity-list" id="historyList"></ul><button class="btn danger" data-action="clear-history">Clear history</button></div>
+        <div class="card"><h3>Saved searches</h3><div class="row"><input id="savedSearchName" placeholder="Name"><input id="savedSearchUrl" placeholder="Search URL or query"><button class="btn primary" data-action="save-search">Save</button></div><div id="savedSearches" class="link-grid"></div></div>
+      </div>
+    </section>
+    <section id="view-about" class="view">
+      <div class="page-head"><h2>About &amp; Legal</h2></div>
+      <div class="card"><h3>GLORY ORG</h3><p>GLORY ORG is a local-first research dashboard. Cases, notes, history, and saved searches are stored in your browser.</p>
+        <h3>External services</h3><ul><li>Google Public DNS</li><li>rdap.org</li><li>Internet Archive Wayback Machine</li><li>crt.sh</li><li>ipwho.is</li><li>Microlink</li><li>Discord lookup service</li></ul>
+        <p>No API keys or credentials are embedded in this project.</p>
+        <h3>Lawful use</h3><p>Intended for lawful research, security awareness, journalism, due diligence, and documentation. It does not provide private-address tracing, relatives, private contact details, private-account access, or anonymous-person deanonymization.</p></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="assets/js/utils.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/cases.js"></script>
+<script src="assets/js/tools.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

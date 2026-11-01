@@ -1,0 +1,29 @@
+# GLORY ORG — OSINT Research Dashboard
+
+Local-first, GitHub Pages-ready OSINT research dashboard.
+
+## Deploy from a phone
+
+1. Create a public GitHub repository named `glory-org`.
+2. Add each numbered file using **Add file → Create new file**.
+3. Rename each uploaded file to the exact GitHub path listed below.
+4. Create `.nojekyll` as an empty file.
+5. Go to Settings → Pages → Deploy from a branch → main → /(root).
+6. Open https://YOUR-USERNAME.github.io/glory-org/
+
+## Numbered file mapping
+
+1. `.nojekyll` — empty file
+2. `index.html`
+3. `assets/css/style.css`
+4. `assets/js/utils.js`
+5. `assets/js/api.js`
+6. `assets/js/cases.js`
+7. `assets/js/tools.js`
+8. `assets/js/app.js`
+9. `404.html`
+10. `README.md`
+
+## Lawful use
+
+Use only for lawful research and documentation. Do not use for stalking, harassment, doxxing, fraud, or unlawful surveillance.

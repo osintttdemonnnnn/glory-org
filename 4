@@ -1,0 +1,8 @@
+const GLORY={store:{get(k,f){try{return JSON.parse(localStorage.getItem('glory:'+k))??f}catch(e){return f}},set(k,v){localStorage.setItem('glory:'+k,JSON.stringify(v))}},
+toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)},
+now(){return new Date().toISOString()},prettyDate(i){try{return new Date(i).toLocaleString()}catch(e){return i}},
+escape(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))},
+open(u){window.open(u,'_blank','noopener')},
+addHistory(kind,value,url){const h=GLORY.store.get('history',[]);h.unshift({kind,value,url,time:GLORY.now()});GLORY.store.set('history',h.slice(0,200));if(window.renderHistory)renderHistory();if(window.renderDashboard)renderDashboard()},
+table(rows){if(!rows||!rows.length)return'<p>No public data returned.</p>';return'<table>'+rows.map(([k,v])=>`<tr><td>${GLORY.escape(k)}</td><td>${GLORY.escape(v)}</td></tr>`).join('')+'</table>'}};
+function $(s){return document.querySelector(s)}function $$(s){return[...document.querySelectorAll(s)]}
